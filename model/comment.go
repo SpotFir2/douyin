@@ -3,7 +3,7 @@ package model
 //评论模型
 type Comment struct {
 	Basics
-	VideoId  int64  `json:"video_id"`  //视频id
-	AuthorId int64  `json:"author_id"` //发布人id
-	Content  string `json:"content"`   //评论内容
+	VideoId     uint64 `json:"video_id"`     //视频id
+	AuthorId    uint64 `json:"author_id"`    //发布人id
+	CommentText string `json:"comment_text"` //评论内容
 }
