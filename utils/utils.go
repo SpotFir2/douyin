@@ -14,7 +14,7 @@ func PwdEncrypt(str, salt string) string {
 	str = str + salt
 	result, err := bcrypt.GenerateFromPassword([]byte(str), bcrypt.DefaultCost)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return string(result)
 }
