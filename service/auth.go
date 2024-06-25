@@ -1,10 +1,11 @@
 package service
 
 import (
-	"douyin/model"
-	"douyin/pkg/config"
 	"errors"
 	"time"
+
+	"github.com/SpotFir2/douyin/model"
+	"github.com/SpotFir2/douyin/pkg/config"
 
 	"github.com/golang-jwt/jwt/v5"
 )

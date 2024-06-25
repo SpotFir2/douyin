@@ -1,10 +1,11 @@
 package service
 
 import (
-	"douyin/model"
-	"douyin/pkg/config"
-	"douyin/pkg/snowflake"
 	"strconv"
+
+	"github.com/SpotFir2/douyin/model"
+	"github.com/SpotFir2/douyin/pkg/config"
+	"github.com/SpotFir2/douyin/pkg/snowflake"
 )
 
 // 初始化config,model,snowflake

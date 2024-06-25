@@ -22,6 +22,7 @@ func PwdEncrypt(str, salt string) string {
 /*
 PwdMatch 密码匹配
 str1-输入密码明文 str2-数据库密码密文 salt-盐值
+true-成功 false-失败
 */
 func PwdMatch(str1, str2, salt string) bool {
 	str1 = str1 + salt
