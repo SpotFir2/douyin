@@ -1,4 +1,4 @@
-module douyin
+module github.com/SpotFir2/douyin
 
 go 1.22.4
 
