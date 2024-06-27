@@ -2,15 +2,6 @@ package controller
 
 import "github.com/gin-gonic/gin"
 
-type GetFavoriteResponse struct {
-	Response
-	VideoList []Video `json:"video_list,omitempty"`
-}
-
-type FavoriteActionResponse struct {
-	Response
-}
-
 /*
 GetFavoriteList 喜欢列表
 用户的所有点赞视频

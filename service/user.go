@@ -3,9 +3,9 @@ package service
 import (
 	"strconv"
 
-	"github.com/SpotFir2/douyin/controller"
 	"github.com/SpotFir2/douyin/model"
 	"github.com/SpotFir2/douyin/pkg/config"
+	"github.com/SpotFir2/douyin/pkg/serializer"
 	"github.com/SpotFir2/douyin/pkg/snowflake"
 	"github.com/SpotFir2/douyin/utils"
 )
@@ -26,11 +26,11 @@ type GetUserInfoService struct {
 }
 
 // Register 用户注册
-func (u *UserRegisterService) Register() (*controller.UserRegisterResponse, error) {
+func (u *UserRegisterService) Register() (*serializer.UserRegisterResponse, error) {
 	//校验用户名是否存在
 	_, err := model.GetUserByUsername(u.Username)
 	if err == nil {
-		res := &controller.UserRegisterResponse{}
+		res := &serializer.UserRegisterResponse{}
 		res.StatusCode = 1
 		res.StatusMsg = "用户名已存在"
 		return res, nil
@@ -44,19 +44,19 @@ func (u *UserRegisterService) Register() (*controller.UserRegisterResponse, erro
 	user.ID = uint64(snowflake.GenerateId())
 	err = user.Save()
 	if err != nil {
-		res := &controller.UserRegisterResponse{}
+		res := &serializer.UserRegisterResponse{}
 		res.StatusCode = 1
 		res.StatusMsg = "用户注册失败"
 		return res, nil
 	}
 	token, err := NewToken(user)
 	if err != nil {
-		res := &controller.UserRegisterResponse{}
+		res := &serializer.UserRegisterResponse{}
 		res.StatusCode = 1
 		res.StatusMsg = "用户token生成失败"
 		return res, nil
 	}
-	res := &controller.UserRegisterResponse{}
+	res := &serializer.UserRegisterResponse{}
 	res.StatusCode = 0
 	res.StatusMsg = "用户注册成功"
 	res.UserId = user.ID
@@ -65,16 +65,16 @@ func (u *UserRegisterService) Register() (*controller.UserRegisterResponse, erro
 }
 
 // Login 用户登录
-func (u *UserLoginService) Login() (*controller.UserLoginResponse, error) {
+func (u *UserLoginService) Login() (*serializer.UserLoginResponse, error) {
 	user, err := model.GetUserByUsername(u.Username)
 	if err != nil {
-		res := &controller.UserLoginResponse{}
+		res := &serializer.UserLoginResponse{}
 		res.StatusCode = 1
 		res.StatusMsg = err.Error()
 		return res, nil
 	}
 	if utils.PwdMatch(u.Username, user.Password, config.Confi.Salt) {
-		res := &controller.UserLoginResponse{}
+		res := &serializer.UserLoginResponse{}
 		res.StatusCode = 0
 		res.StatusMsg = "用户登录成功"
 		res.UserId = user.ID
@@ -82,7 +82,7 @@ func (u *UserLoginService) Login() (*controller.UserLoginResponse, error) {
 		res.Token = token
 		return res, nil
 	} else {
-		res := &controller.UserLoginResponse{}
+		res := &serializer.UserLoginResponse{}
 		res.StatusCode = 1
 		res.StatusMsg = "用户登录失败"
 		return res, nil
@@ -90,19 +90,19 @@ func (u *UserLoginService) Login() (*controller.UserLoginResponse, error) {
 }
 
 // GetUserInfo 用户信息
-func (u *GetUserInfoService) GetUserInfo() (*controller.GetUserInfoResponse, error) {
+func (u *GetUserInfoService) GetUserInfo() (*serializer.GetUserInfoResponse, error) {
 	userId, _ := strconv.ParseUint(u.UserId, 10, 64)
 	user, err := model.GetUserById(userId)
 	if err != nil {
-		res := &controller.GetUserInfoResponse{}
+		res := &serializer.GetUserInfoResponse{}
 		res.StatusCode = 1
 		res.StatusMsg = "用户名不存在"
 	}
 	user2, _ := GetUsetByToken(u.Token)
-	res := &controller.GetUserInfoResponse{}
+	res := &serializer.GetUserInfoResponse{}
 	res.StatusCode = 0
 	res.StatusMsg = "用户信息获取成功"
-	res.User.Id = user.ID
+	res.User.ID = user.ID
 	res.User.Name = user.Name
 	res.User.FollowCount = user.FollowCount
 	res.User.FollowerCount = user.FollowerCount

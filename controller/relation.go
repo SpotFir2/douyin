@@ -2,20 +2,6 @@ package controller
 
 import "github.com/gin-gonic/gin"
 
-type RelationActionResponse struct {
-	Response
-}
-
-type GetFollowListResponse struct {
-	Response
-	UserList []User `json:"user_list,omitempty"` //用户列表
-}
-
-type GetFollowerListResponse struct {
-	Response
-	UserList []User `json:"user_list,omitempty"` //用户列表
-}
-
 /*
 RelationAction 关注操作
 POST /douyin/relation/action/

@@ -2,12 +2,6 @@ package controller
 
 import "github.com/gin-gonic/gin"
 
-type GetFeedResponse struct {
-	Response
-	NextTime  uint64  `json:"next_time,omitempty"`  //本次返回的视频中，发布最早的时间，作为下次请求时的latest_time
-	VideoList []Video `json:"video_list,omitempty"` //视频列表
-}
-
 /*
 GetFeed 视频流接口
 不限制登录状态，返回按投稿时间倒序的视频列表，视频数由服务端控制，单次最多30个

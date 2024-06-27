@@ -1,30 +1,11 @@
 package controller
 
 import (
+	// TODO 拆分响应体与controller 尝试序列化响应结构
 	"github.com/SpotFir2/douyin/service"
 
 	"github.com/gin-gonic/gin"
 )
-
-// 用户注册响应
-type UserRegisterResponse struct {
-	Response
-	UserId uint64 `json:"user_id"` //用户id
-	Token  string `json:"token"`   //用户鉴权token
-}
-
-// 用户登录响应
-type UserLoginResponse struct {
-	Response
-	UserId uint64 `json:"user_id,omitempty"` //用户id
-	Token  string `json:"token,omitempty"`   //用户鉴权token
-}
-
-// 用户信息响应
-type GetUserInfoResponse struct {
-	Response
-	User User `json:"user,omitempty"` //用户信息
-}
 
 func InitUserRoute(router *gin.RouterGroup) {
 	router.POST("register/", UserRegister)
@@ -42,7 +23,6 @@ https://apifox.com/apidoc/shared-8cc50618-0da6-4d5e-a398-76f3b8f766c5/api-188999
 func UserRegister(c *gin.Context) {
 	username := c.Query("username") //注册用户名，最长32个字符
 	password := c.Query("password") //密码，最长32个字符
-	//TODO 用户注册
 
 	userRegisterService := service.UserRegisterService{
 		Username: username,
@@ -63,7 +43,6 @@ https://apifox.com/apidoc/shared-8cc50618-0da6-4d5e-a398-76f3b8f766c5/api-189000
 func UserLogin(c *gin.Context) {
 	username := c.Query("username") //注册用户名，最长32个字符
 	password := c.Query("password") //密码，最长32个字符
-	//TODO 用户登录
 
 	userLoginService := service.UserLoginService{
 		Username: username,
@@ -83,7 +62,6 @@ https://apifox.com/apidoc/shared-8cc50618-0da6-4d5e-a398-76f3b8f766c5/api-189012
 func GetUserInfo(c *gin.Context) {
 	userId := c.Query("user_id") //用户id
 	token := c.Query("token")    //用户鉴权token
-	//TODO 用户信息
 
 	getUserInfoService := service.GetUserInfoService{
 		UserId: userId,

@@ -2,15 +2,6 @@ package controller
 
 import "github.com/gin-gonic/gin"
 
-type GetPublishListResponse struct {
-	Response
-	VideoList []Video `json:"video_list,omitempty"` //用户发布的视频列表
-}
-
-type PublishActionResponse struct {
-	Response
-}
-
 /*
 GetPublish 发布列表
 用户的视频发布列表，直接列出用户所有投稿过的视频
