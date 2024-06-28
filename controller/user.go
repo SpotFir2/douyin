@@ -28,9 +28,8 @@ func UserRegister(c *gin.Context) {
 		Username: username,
 		Password: password,
 	}
-	userRegisterResponse, _ := userRegisterService.Register()
+	userRegisterResponse := userRegisterService.Register()
 	c.JSON(200, userRegisterResponse)
-	return
 }
 
 /*
@@ -48,9 +47,8 @@ func UserLogin(c *gin.Context) {
 		Username: username,
 		Password: password,
 	}
-	userLoginResponse, _ := userLoginService.Login()
+	userLoginResponse := userLoginService.Login()
 	c.JSON(200, userLoginResponse)
-	return
 }
 
 /*
@@ -67,6 +65,6 @@ func GetUserInfo(c *gin.Context) {
 		UserId: userId,
 		Token:  token,
 	}
-	getUserInfoResponse, _ := getUserInfoService.GetUserInfo()
+	getUserInfoResponse := getUserInfoService.GetUserInfo()
 	c.JSON(200, getUserInfoResponse)
 }

@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"time"
 
 	"github.com/SpotFir2/douyin/model"
@@ -28,15 +27,15 @@ func praseToken(tokenString string) (*jwt.Token, error) {
 	})
 }
 
-// GetUsetByToken 根据token获取用户
-func GetUsetByToken(tokenString string) (*model.User, error) {
+// GetUserByToken 根据token获取用户
+func GetUserByToken(tokenString string) (*model.User, error) {
 	token, err := praseToken(tokenString)
 	if err != nil {
-		return nil, errors.New("token无效")
+		return nil, err
 	}
 	username, err := token.Claims.GetSubject()
 	if err != nil {
-		return nil, errors.New("token非法")
+		return nil, err
 	}
 	return model.GetUserByUsername(username)
 }

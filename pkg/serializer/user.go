@@ -19,5 +19,47 @@ type UserLoginResponse struct {
 // 用户信息响应
 type GetUserInfoResponse struct {
 	Response
-	User model.UserAPI `json:"user,omitempty"` //用户信息
+	UserAPI model.UserAPI `json:"user,omitempty"` //用户信息
+}
+
+func UserRegisterResponseBuilder(statusCode int, userId uint64, token string) *UserRegisterResponse {
+	res := &UserRegisterResponse{}
+	res.Response = NewResponse(statusCode, CodeUserMsg[statusCode])
+	if statusCode != CodeSuccess {
+		return res
+	} else {
+		res.UserId = userId
+		res.Token = token
+		return res
+	}
+
+}
+
+func UserLoginResponseBuilder(statusCode int, userId uint64, token string) *UserLoginResponse {
+	res := &UserLoginResponse{}
+	res.Response = NewResponse(statusCode, CodeUserMsg[statusCode])
+	if statusCode != CodeSuccess {
+		return res
+	} else {
+		res.UserId = userId
+		res.Token = token
+		return res
+	}
+}
+
+func GetUserInfoResponseBuilder(statusCode int, userAPI *model.UserAPI) *GetUserInfoResponse {
+	res := &GetUserInfoResponse{}
+	res.Response = NewResponse(statusCode, CodeUserMsg[statusCode])
+	if statusCode != CodeSuccess {
+		return res
+	} else {
+		res.UserAPI = model.UserAPI{
+			ID:            userAPI.ID,
+			Name:          userAPI.Name,
+			FollowCount:   userAPI.FollowCount,
+			FollowerCount: userAPI.FollowerCount,
+			IsFollow:      userAPI.IsFollow,
+		}
+		return res
+	}
 }

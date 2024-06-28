@@ -2,6 +2,7 @@ package utils
 
 import (
 	"log"
+	"strings"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -30,4 +31,22 @@ func PwdMatch(str1, str2, salt string) bool {
 		return false
 	}
 	return true
+}
+
+/*
+CheckUsername 校验用户名
+如果用户名长度大于32则不合法
+true-成功 false-失败
+*/
+func CheckUsername(username string) bool {
+	return strings.Count(username, "") <= 32
+}
+
+/*
+CheckPassword 校验用户名
+如果用户名长度大于32则不合法
+true-成功 false-失败
+*/
+func CheckPassword(password string) bool {
+	return strings.Count(password, "") <= 32
 }

@@ -26,14 +26,19 @@ type GetUserInfoService struct {
 }
 
 // Register 用户注册
-func (u *UserRegisterService) Register() (*serializer.UserRegisterResponse, error) {
+func (u *UserRegisterService) Register() *serializer.UserRegisterResponse {
 	//校验用户名是否存在
 	_, err := model.GetUserByUsername(u.Username)
 	if err == nil {
-		res := &serializer.UserRegisterResponse{}
-		res.StatusCode = 1
-		res.StatusMsg = "用户名已存在"
-		return res, nil
+		return serializer.UserRegisterResponseBuilder(serializer.CodeUserAlreadyExists, 0, "")
+	}
+	//校验用户名合法性
+	if !utils.CheckUsername(u.Username) {
+		return serializer.UserRegisterResponseBuilder(serializer.CodeUserNameInvalid, 0, "")
+	}
+	//校验密码合法性
+	if !utils.CheckPassword(u.Password) {
+		return serializer.UserRegisterResponseBuilder(serializer.CodeUserPwdInvalid, 0, "")
 	}
 	user := &model.User{
 		FollowCount:   0,
@@ -44,68 +49,49 @@ func (u *UserRegisterService) Register() (*serializer.UserRegisterResponse, erro
 	user.ID = uint64(snowflake.GenerateId())
 	err = user.Save()
 	if err != nil {
-		res := &serializer.UserRegisterResponse{}
-		res.StatusCode = 1
-		res.StatusMsg = "用户注册失败"
-		return res, nil
+		return serializer.UserRegisterResponseBuilder(serializer.CodeUserRegisterFailed, 0, "")
 	}
 	token, err := NewToken(user)
 	if err != nil {
-		res := &serializer.UserRegisterResponse{}
-		res.StatusCode = 1
-		res.StatusMsg = "用户token生成失败"
-		return res, nil
+		return serializer.UserRegisterResponseBuilder(serializer.CodeUserTokenGenerateFailed, 0, "")
 	}
-	res := &serializer.UserRegisterResponse{}
-	res.StatusCode = 0
-	res.StatusMsg = "用户注册成功"
-	res.UserId = user.ID
-	res.Token = token
-	return res, nil
+	return serializer.UserRegisterResponseBuilder(0, user.ID, token)
 }
 
 // Login 用户登录
-func (u *UserLoginService) Login() (*serializer.UserLoginResponse, error) {
+func (u *UserLoginService) Login() *serializer.UserLoginResponse {
 	user, err := model.GetUserByUsername(u.Username)
 	if err != nil {
-		res := &serializer.UserLoginResponse{}
-		res.StatusCode = 1
-		res.StatusMsg = err.Error()
-		return res, nil
+		return serializer.UserLoginResponseBuilder(serializer.CodeUserNotFound, 0, "")
 	}
 	if utils.PwdMatch(u.Username, user.Password, config.Confi.Salt) {
-		res := &serializer.UserLoginResponse{}
-		res.StatusCode = 0
-		res.StatusMsg = "用户登录成功"
-		res.UserId = user.ID
-		token, _ := NewToken(user)
-		res.Token = token
-		return res, nil
+		token, err := NewToken(user)
+		if err != nil {
+			return serializer.UserLoginResponseBuilder(serializer.CodeUserTokenGenerateFailed, 0, "")
+		}
+		return serializer.UserLoginResponseBuilder(0, user.ID, token)
 	} else {
-		res := &serializer.UserLoginResponse{}
-		res.StatusCode = 1
-		res.StatusMsg = "用户登录失败"
-		return res, nil
+		return serializer.UserLoginResponseBuilder(serializer.CodeUserLoginFailed, 0, "")
 	}
 }
 
 // GetUserInfo 用户信息
-func (u *GetUserInfoService) GetUserInfo() (*serializer.GetUserInfoResponse, error) {
+func (u *GetUserInfoService) GetUserInfo() *serializer.GetUserInfoResponse {
 	userId, _ := strconv.ParseUint(u.UserId, 10, 64)
 	user, err := model.GetUserById(userId)
 	if err != nil {
-		res := &serializer.GetUserInfoResponse{}
-		res.StatusCode = 1
-		res.StatusMsg = "用户名不存在"
+		return serializer.GetUserInfoResponseBuilder(serializer.CodeUserNotFound, nil)
 	}
-	user2, _ := GetUsetByToken(u.Token)
-	res := &serializer.GetUserInfoResponse{}
-	res.StatusCode = 0
-	res.StatusMsg = "用户信息获取成功"
-	res.User.ID = user.ID
-	res.User.Name = user.Name
-	res.User.FollowCount = user.FollowCount
-	res.User.FollowerCount = user.FollowerCount
-	res.User.IsFollow = model.GetRelationByUserId(user2.ID, userId)
-	return res, nil
+	user2, err := GetUserByToken(u.Token)
+	if err != nil {
+		return serializer.GetUserInfoResponseBuilder(serializer.CodeUserTokenInvalid, nil)
+	}
+	userAPI := &model.UserAPI{
+		ID:            user.ID,
+		Name:          user.Name,
+		FollowCount:   user.FollowCount,
+		FollowerCount: user.FollowerCount,
+		IsFollow:      model.GetRelationByUserId(user2.ID, userId),
+	}
+	return serializer.GetUserInfoResponseBuilder(0, userAPI)
 }
