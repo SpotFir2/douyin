@@ -1,0 +1,78 @@
+SELECT
+    v.ID AS id,
+    u.id AS author_id,
+    u.name AS author_name,
+    u.follow_count AS author_follow_count,
+    u.follower_count AS author_follower_count,
+    FALSE AS author_is_follow,
+    v.play_url AS play_url,
+    v.cover_url AS cover_url,
+    v.favorite_count AS favorite_count,
+    v.comment_count AS comment_count,
+    FALSE AS is_favorite,
+    v.title AS title
+FROM videos v
+LEFT JOIN users u ON v.author_id=u.id
+WHERE author_id =  authorID
+ORDER BY v.created_at
+
+SELECT
+    v.ID AS id,
+    u.id AS author_id,
+    u.name AS author_name,
+    u.follow_count AS author_follow_count,
+    u.follower_count AS author_follower_count,
+    IF(r.id IS NULL,false,true) AS author_is_follow,
+    v.play_url AS play_url,\n    v.cover_url AS cover_url,
+    v.favorite_count AS favorite_count,
+    v.comment_count AS comment_count,
+    IF(f.id IS NULL,false,true) AS is_favorite,
+    v.title AS title
+FROM videos v
+LEFT JOIN users u ON v.author_id=u.id
+LEFT JOIN relations r on u.id = r.follow_id AND r.user_id = ?
+LEFT JOIN favorites f on u.id = ? AND v.id = f.video_id
+WHERE author_id = ?
+ORDER BY v.created_at
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT
+	v.id as id
+	u.id as author_id
+	u.name as author_name
+	u.follow_count as author_follow_count
+	u.follower_count as author_follower_count
+	IF(r.id IS NULL,FALSE,TRUE) as author_is_follow
+	v.play_url as play_url
+	v.cover_url as cover_url
+	v.favorite_count as favorite_count
+	v.comment_count as comment_count
+	IF(f.id IS NULL,FALSE,TRUE) as is_favorite
+	v.title as title
+FROM video v
+LEFT JOIN user u ON v.author_id=u.id
+LEFT JOIN relation r ON v.author_id=r.followed_id AND r.user_id = ?
+LEFT JOIN favorite f ON v.id=f.video_id AND f.user_id = ?
+WHERE v.author_id = ?
+ORDER BY v.created_at
+

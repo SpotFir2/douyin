@@ -30,9 +30,8 @@ func UserRegisterResponseBuilder(statusCode int, userId uint64, token string) *U
 	} else {
 		res.UserId = userId
 		res.Token = token
-		return res
 	}
-
+	return res
 }
 
 func UserLoginResponseBuilder(statusCode int, userId uint64, token string) *UserLoginResponse {

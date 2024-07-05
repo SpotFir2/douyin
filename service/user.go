@@ -11,18 +11,18 @@ import (
 )
 
 type UserRegisterService struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string
+	Password string
 }
 
 type UserLoginService struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string
+	Password string
 }
 
 type GetUserInfoService struct {
-	UserId string `json:"user_id"`
-	Token  string `json:"token"`
+	UserId string
+	Token  string
 }
 
 // Register 用户注册
@@ -76,7 +76,7 @@ func (u *UserLoginService) Login() *serializer.UserLoginResponse {
 }
 
 // GetUserInfo 用户信息
-func (u *GetUserInfoService) GetUserInfo() *serializer.GetUserInfoResponse {
+func (u *GetUserInfoService) GetInfo() *serializer.GetUserInfoResponse {
 	userId, _ := strconv.ParseUint(u.UserId, 10, 64)
 	user, err := model.GetUserById(userId)
 	if err != nil {

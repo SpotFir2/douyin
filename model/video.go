@@ -10,3 +10,33 @@ type Video struct {
 	CommentCount  int    `json:"comment_count"`  //评论数目
 	Title         string `json:"title"`          //标题
 }
+
+//视频与作者绑定模型
+type VideoAuthorBundle struct {
+	Basics
+	Author        UserAPI `json:"author"`
+	PlayUrl       string  `json:"play_url"`       //播放地址
+	CoverUrl      string  `json:"cover_url"`      //封面地址
+	FavoriteCount int     `json:"favorite_count"` //赞数目
+	CommentCount  int     `json:"comment_count"`  //评论数目
+	IsFavorited   bool    `json:"is_favorited"`   //true-已点赞，false-未点赞
+	Title         string  `json:"title"`          //标题
+}
+
+func GetVideoListByAuthorId(userId uint64) ([]*Video, error) {
+	var videoList []*Video
+	err := DB.Where("author_id = ?").Find(&videoList).Error
+	if err != nil {
+		return nil, err
+	}
+	return videoList, nil
+}
+
+func GetVideoListById(videoIdList []uint64) ([]*Video, error) {
+	var videoList []*Video
+	err := DB.Where("id IN (?)", videoIdList).Find(videoList).Error
+	if err != nil {
+		return nil, err
+	}
+	return videoList, nil
+}

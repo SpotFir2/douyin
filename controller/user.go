@@ -65,6 +65,6 @@ func GetUserInfo(c *gin.Context) {
 		UserId: userId,
 		Token:  token,
 	}
-	getUserInfoResponse := getUserInfoService.GetUserInfo()
+	getUserInfoResponse := getUserInfoService.GetInfo()
 	c.JSON(200, getUserInfoResponse)
 }

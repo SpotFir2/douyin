@@ -1,17 +1,31 @@
 package controller
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/SpotFir2/douyin/service"
+	"github.com/gin-gonic/gin"
+)
+
+func InitPublishRoute(router *gin.RouterGroup) {
+	router.GET("list/", GetPublishList)
+	router.POST("action/", PublishAction)
+}
 
 /*
-GetPublish 发布列表
+GetPublishList 发布列表
 用户的视频发布列表，直接列出用户所有投稿过的视频
 GET /douyin/publish/list/
 https://apifox.com/apidoc/shared-8cc50618-0da6-4d5e-a398-76f3b8f766c5/api-18901444
 */
-func GetPublish(c *gin.Context) {
-	//token := c.Query("token")    //用户鉴权token
-	//userId := c.Query("user_id") //用户id
-	//TODO 发布列表
+func GetPublishList(c *gin.Context) {
+	token := c.Query("token")    //用户鉴权token
+	userId := c.Query("user_id") //用户id
+
+	getPublishListService := service.GetPublishListService{
+		Token:  token,
+		UserId: userId,
+	}
+	getPublishListResponse := getPublishListService.GetList()
+	c.JSON(200, getPublishListResponse)
 }
 
 /*

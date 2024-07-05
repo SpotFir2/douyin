@@ -41,6 +41,7 @@ func GetUserByToken(tokenString string) (*model.User, error) {
 }
 
 // CheckToken 检验token是否有效
+// true-有效 false-无效
 func CheckToken(tokenString string) bool {
 	token, err := praseToken(tokenString)
 	return token.Valid && err == nil

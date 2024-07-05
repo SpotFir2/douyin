@@ -25,13 +25,14 @@ var CodeUserMsg = map[int]string{
 }
 
 const (
-	CodePublishCommonFailed = 2000 + iota
-	CodePublishTitleInvalid
+	CodePublishTitleInvalid = 2000 + iota
+	CodePublishGetFailed
 )
 
 var CodePublishMsg = map[int]string{
 	CodeSuccess:             "",
-	CodePublishTitleInvalid: "用户token不合法",
+	CodePublishTitleInvalid: "视频标题不合法",
+	CodePublishGetFailed:    "获取发布列表失败",
 }
 
 const (
