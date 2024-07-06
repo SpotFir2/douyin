@@ -13,7 +13,7 @@ type PublishActionResponse struct {
 
 func GetPublishListResponseBuilder(statusCode int, videoList []*model.VideoAuthorBundle) *GetPublishListResponse {
 	res := &GetPublishListResponse{
-		Response: NewResponse(statusCode, CodePublishMsg[statusCode]),
+		Response: NewResponse(statusCode, CodeMsg[statusCode]),
 	}
 	if statusCode != CodeSuccess {
 		return res
@@ -23,9 +23,9 @@ func GetPublishListResponseBuilder(statusCode int, videoList []*model.VideoAutho
 	return res
 }
 
-func PublishActionResponseBuilder(statusCode int) *PublishActionResponse {
+func PublishActionResponseBuilder(statusCode int, err string) *PublishActionResponse {
 	res := &PublishActionResponse{
-		Response: NewResponse(statusCode, CodePublishMsg[statusCode]),
+		Response: NewResponse(statusCode, err),
 	}
 	return res
 }

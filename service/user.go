@@ -47,11 +47,11 @@ func (u *UserRegisterService) Register() *serializer.UserRegisterResponse {
 	user.Name = u.Username
 	user.Password = utils.PwdEncrypt(u.Password, config.Confi.Salt)
 	user.ID = uint64(snowflake.GenerateId())
-	err = user.Save()
+	err = user.Save() //存储user记录
 	if err != nil {
 		return serializer.UserRegisterResponseBuilder(serializer.CodeUserRegisterFailed, 0, "")
 	}
-	token, err := NewToken(user)
+	token, err := NewToken(user) //生成有效期为30天的token
 	if err != nil {
 		return serializer.UserRegisterResponseBuilder(serializer.CodeUserTokenGenerateFailed, 0, "")
 	}
@@ -60,18 +60,18 @@ func (u *UserRegisterService) Register() *serializer.UserRegisterResponse {
 
 // Login 用户登录
 func (u *UserLoginService) Login() *serializer.UserLoginResponse {
-	user, err := model.GetUserByUsername(u.Username)
+	user, err := model.GetUserByUsername(u.Username) //从数据库中查询用户
 	if err != nil {
-		return serializer.UserLoginResponseBuilder(serializer.CodeUserNotFound, 0, "")
+		return serializer.UserLoginResponseBuilder(serializer.CodeUserLoginFailed, 0, "") //仅返回登陆失败信息,防止用户试探用户名
 	}
-	if utils.PwdMatch(u.Username, user.Password, config.Confi.Salt) {
+	if utils.PwdMatch(u.Username, user.Password, config.Confi.Salt) { //密码校验,数据库仅存储密文形式密码防止泄露
 		token, err := NewToken(user)
 		if err != nil {
 			return serializer.UserLoginResponseBuilder(serializer.CodeUserTokenGenerateFailed, 0, "")
 		}
 		return serializer.UserLoginResponseBuilder(0, user.ID, token)
 	} else {
-		return serializer.UserLoginResponseBuilder(serializer.CodeUserLoginFailed, 0, "")
+		return serializer.UserLoginResponseBuilder(serializer.CodeUserLoginFailed, 0, "") //仅返回登陆失败信息,防止用户试探密码
 	}
 }
 

@@ -38,7 +38,7 @@ func GetUserById(userid uint64) (*UserAPI, error) {
 	return userapi, err
 }
 
-//Save 在数据库中存储user
+//Save 在数据库中存储user,如存在则更新,不存在则创建
 func (user *User) Save() error {
 	return DB.Save(user).Error
 }

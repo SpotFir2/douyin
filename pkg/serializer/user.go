@@ -24,7 +24,7 @@ type GetUserInfoResponse struct {
 
 func UserRegisterResponseBuilder(statusCode int, userId uint64, token string) *UserRegisterResponse {
 	res := &UserRegisterResponse{}
-	res.Response = NewResponse(statusCode, CodeUserMsg[statusCode])
+	res.Response = NewResponse(statusCode, CodeMsg[statusCode])
 	if statusCode != CodeSuccess {
 		return res
 	} else {
@@ -36,7 +36,7 @@ func UserRegisterResponseBuilder(statusCode int, userId uint64, token string) *U
 
 func UserLoginResponseBuilder(statusCode int, userId uint64, token string) *UserLoginResponse {
 	res := &UserLoginResponse{}
-	res.Response = NewResponse(statusCode, CodeUserMsg[statusCode])
+	res.Response = NewResponse(statusCode, CodeMsg[statusCode])
 	if statusCode != CodeSuccess {
 		return res
 	} else {
@@ -48,7 +48,7 @@ func UserLoginResponseBuilder(statusCode int, userId uint64, token string) *User
 
 func GetUserInfoResponseBuilder(statusCode int, userAPI *model.UserAPI) *GetUserInfoResponse {
 	res := &GetUserInfoResponse{}
-	res.Response = NewResponse(statusCode, CodeUserMsg[statusCode])
+	res.Response = NewResponse(statusCode, CodeMsg[statusCode])
 	if statusCode != CodeSuccess {
 		return res
 	} else {

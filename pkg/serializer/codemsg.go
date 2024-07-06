@@ -12,7 +12,30 @@ const (
 	CodeUserTokenGenerateFailed
 )
 
-var CodeUserMsg = map[int]string{
+const (
+	CodePublishTitleInvalid = 2000 + iota
+	CodePublishGetFailed
+	CodePublishActionFailed
+)
+
+const (
+	CodeFeedNoMore = 3000 + iota
+	CodeFeedGetFailed
+)
+
+const (
+	CodeFavoriteLikeFailed = 4000 + iota
+)
+
+const (
+	CodeCommentFaild = 5000 + iota
+)
+
+const (
+	CodeRelationLikeFailed = 6000 + iota
+)
+
+var CodeMsg = map[int]string{
 	CodeSuccess:                 "",
 	CodeUserAlreadyExists:       "用户已存在",
 	CodeUserRegisterFailed:      "用户注册失败",
@@ -22,53 +45,12 @@ var CodeUserMsg = map[int]string{
 	CodeUserIdInvalid:           "用户id不合法",
 	CodeUserTokenInvalid:        "用户token不合法",
 	CodeUserTokenGenerateFailed: "用户token生成失败",
-}
-
-const (
-	CodePublishTitleInvalid = 2000 + iota
-	CodePublishGetFailed
-)
-
-var CodePublishMsg = map[int]string{
-	CodeSuccess:             "",
-	CodePublishTitleInvalid: "视频标题不合法",
-	CodePublishGetFailed:    "获取发布列表失败",
-}
-
-const (
-	CodeFeedNoMore = 3000 + iota
-	CodeFeedGetFailed
-)
-
-var CodeFeedMsg = map[int]string{
-	CodeSuccess:       "",
-	CodeFeedNoMore:    "没有更多视频",
-	CodeFeedGetFailed: "无法获取视频",
-}
-
-const (
-	CodeFavoriteLikeFailed = 4000 + iota
-)
-
-var CodeFavoriteMsg = map[int]string{
-	CodeSuccess:            "",
-	CodeFavoriteLikeFailed: "点赞失败",
-}
-
-const (
-	CodeCommentFaild = 5000 + iota
-)
-
-var CodeCommentMsg = map[int]string{
-	CodeSuccess:      "",
-	CodeCommentFaild: "评论失败",
-}
-
-const (
-	CodeRelationLikeFailed = 6000 + iota
-)
-
-var CodeRelationMsg = map[int]string{
-	CodeSuccess:            "",
-	CodeRelationLikeFailed: "关注失败",
+	CodePublishTitleInvalid:     "视频标题不合法",
+	CodePublishGetFailed:        "获取发布列表失败",
+	CodePublishActionFailed:     "视频上传失败",
+	CodeFeedNoMore:              "没有更多视频",
+	CodeFeedGetFailed:           "无法获取视频",
+	CodeFavoriteLikeFailed:      "点赞失败",
+	CodeCommentFaild:            "评论失败",
+	CodeRelationLikeFailed:      "关注失败",
 }

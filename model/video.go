@@ -23,6 +23,7 @@ type VideoAuthorBundle struct {
 	Title         string  `json:"title"`          //标题
 }
 
+//GetVideoListByAuthorId 通过用户id获取视频列表
 func GetVideoListByAuthorId(userId uint64) ([]*Video, error) {
 	var videoList []*Video
 	err := DB.Where("author_id = ?").Find(&videoList).Error
@@ -32,6 +33,7 @@ func GetVideoListByAuthorId(userId uint64) ([]*Video, error) {
 	return videoList, nil
 }
 
+//GetVideoListById 通过视频id列表获取视频列表
 func GetVideoListById(videoIdList []uint64) ([]*Video, error) {
 	var videoList []*Video
 	err := DB.Where("id IN (?)", videoIdList).Find(videoList).Error
@@ -39,4 +41,9 @@ func GetVideoListById(videoIdList []uint64) ([]*Video, error) {
 		return nil, err
 	}
 	return videoList, nil
+}
+
+//Save 保存video记录,如果存在则更新,不存在则创建
+func (v *Video) Save() error {
+	return DB.Save(&v).Error
 }

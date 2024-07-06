@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitUserRoute(router *gin.RouterGroup) {
+func InitUserRouter(router *gin.RouterGroup) {
 	router.POST("register/", UserRegister)
 	router.POST("login/", UserLogin)
 	router.GET("/", GetUserInfo)
@@ -24,7 +24,7 @@ func UserRegister(c *gin.Context) {
 	username := c.Query("username") //注册用户名，最长32个字符
 	password := c.Query("password") //密码，最长32个字符
 
-	userRegisterService := service.UserRegisterService{
+	userRegisterService := &service.UserRegisterService{
 		Username: username,
 		Password: password,
 	}
@@ -43,7 +43,7 @@ func UserLogin(c *gin.Context) {
 	username := c.Query("username") //注册用户名，最长32个字符
 	password := c.Query("password") //密码，最长32个字符
 
-	userLoginService := service.UserLoginService{
+	userLoginService := &service.UserLoginService{
 		Username: username,
 		Password: password,
 	}
@@ -61,7 +61,7 @@ func GetUserInfo(c *gin.Context) {
 	userId := c.Query("user_id") //用户id
 	token := c.Query("token")    //用户鉴权token
 
-	getUserInfoService := service.GetUserInfoService{
+	getUserInfoService := &service.GetUserInfoService{
 		UserId: userId,
 		Token:  token,
 	}
